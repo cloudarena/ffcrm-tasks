@@ -43,3 +43,11 @@ You should then be able to add a descriptive comment about what is in this merge
 You can read more about pull requests here: http://help.github.com/pull-requests/
 
 ## E. Rinse and repeat
+
+Have more to implement? Repeat the process from B-thru-E
+
+#### More Reading
+
+For more reading, check out the excellent Pro Git book online, especially the Public Small Project section in chapter 5.2: (http://progit.org/book/ch5-2.html).
+
+*Taken from [GitHub Best Practices](https://github.com/skyscreamer/yoga/wiki/GitHub-Best-Practices)*
