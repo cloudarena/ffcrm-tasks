@@ -10,3 +10,7 @@
 
   = render "comments/new", :commentable => @task
   = render :partial => "shared/timeline", :collection => @task.comments
+
+  = hook(:show_task_bottom, self) do
+    = render "versions/versions", :object => @task
+
