@@ -21,7 +21,7 @@ module FfcrmTasks
 
     # 
     # Here is trick to override the rails applicatioin's controller. 
-    # notice it's not good idea to overall the main application, since it's fighting back to framework rules. 
+    # notice it's not good idea to override the main application, since it's fighting back to framework rules. 
     # so use it with caution! and use only in case that you really understand the Rails bootstrap process clearly.
     # - roadt.
     #
@@ -31,7 +31,9 @@ module FfcrmTasks
       mod_engine = self
 
       ActiveSupport.on_load(:after_initialize) do
+        ActiveSupport::Dependencies.autoload_paths -= mod_all_autoload_paths
         ActiveSupport::Dependencies.autoload_paths.unshift(*mod_all_autoload_paths)
+        ActiveSupport::Dependencies.autoload_once_paths -= mod_all_autoload_once_paths
         ActiveSupport::Dependencies.autoload_once_paths.unshift(*mod_all_autoload_once_paths)
         mod_engine.engine_eager_load!
       end
