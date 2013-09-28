@@ -3,7 +3,15 @@
 # Fat Free CRM is freely distributable under the terms of MIT license.
 # See MIT-LICENSE file or http://www.opensource.org/licenses/mit-license.php
 #------------------------------------------------------------------------------
-class TasksController < ApplicationController
+
+
+#
+# Chagne task controller to inherit controller.  so that it support neccessary facilities in ffcrm-tasks
+# (this require to fix up task model simutaneously, since entity controller have callback/filters 
+# that impose more requirement to model class. note for model class change code, it is injected with hooks ). 
+# 
+
+class TasksController < EntitiesController
   before_filter :require_user
   before_filter :set_current_tab, :only => [ :index, :show ]
   before_filter :update_sidebar, :only => :index
@@ -156,13 +164,6 @@ class TasksController < ApplicationController
   # task timeline 
   def timeline(asset)
     (asset.comments + asset.emails).sort { |x, y| y.created_at <=> x.created_at }
-  end
-
-
-  def subscribe
-  end
-
-  def unsubscribe
   end
 
 
