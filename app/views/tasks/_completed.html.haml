@@ -4,13 +4,20 @@
   - else
     .strip.white #{t :other}
 
+  - is_my = completed.my?(current_user)
   .tools
-    - if shown_on_landing_page?
-      = link_to_discard(completed) + (current_user == completed.user ? ' | ' : '')
-    = link_to_task_delete(completed, bucket) if current_user == completed.user
+    - if is_my
+      - if shown_on_landing_page?
+        = link_to_discard(completed) + (current_user == completed.user ? ' | ' : '')
+      = link_to_task_delete(completed, bucket) if current_user == completed.user
 
   .indent
-    %strike= link_to auto_link(h(completed.name)), task_path(completed)
+    %strike
+      - if is_my
+        = link_to auto_link(h(completed.name)), task_path(completed)
+      - else
+        = h(completed.name)
+
     - if completed.asset_id?
       == #{t :related} #{link_to(h(completed.asset.name), polymorphic_url(completed.asset))}
     &ndash;
