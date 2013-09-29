@@ -1,0 +1,20 @@
+- tasks = index_user.tasks(@view)
+
+- if @view == "completed"
+  - buckets = Setting.unroll(:task_completed)
+  .title
+    = index_user.full_name + " - " +  t(:completed_tasks)
+    = image_tag("loading.gif", :size => :thumb, :id => "loading", :style => "display: none;")
+- else
+  - buckets = Setting.unroll(:task_bucket)
+  = render :partial => "index_user_title", :locals => { :user => index_user}
+  
+
+.log#tasks
+  - buckets.each do |value, key|
+    %div{ hidden_if(filtered_out?(@view, key)), :id => "list_#{key}" }
+      %h3{:class => key}= t(value)
+      .bucket{:id => key}= render :partial => @view, :collection => tasks[key] || [], :locals => { :bucket => key }
+  - if tasks.values.flatten.blank?
+    = render "empty"
+

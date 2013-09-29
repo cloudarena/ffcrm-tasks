@@ -20,11 +20,21 @@ class TasksController < EntitiesController
   #----------------------------------------------------------------------------
   def index
     @view = params[:view] || "pending"
-    @tasks = Task.find_all_grouped(current_user, @view)
+    @users = current_user.groups.map{|g| g.users}.flatten
+    @users.tap{|users| 
+      users.delete(current_user);
+      users.unshift(current_user);
+    }
+    @mapping = {}  # uid -> tasks mapping.
+    @tasks = []
+    @users.each do |user| 
+      tasks = Task.find_all_grouped(user,@view)
+      @tasks << tasks.map(&:second).flatten
+    end
 
     respond_with @tasks do |format|
       format.xls { render :layout => 'header' }
-      format.csv { render :csv => @tasks.map(&:second).flatten }
+      format.csv { render :csv => @tasks }
       format.xml { render :xml => @tasks, :except => [:subscribed_users] }
     end
   end
