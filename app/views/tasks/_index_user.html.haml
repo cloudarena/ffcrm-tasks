@@ -1,9 +1,11 @@
 - tasks = index_user.tasks(@view)
 
+- is_me = (index_user == current_user)
+
 - if @view == "completed"
   - buckets = Setting.unroll(:task_completed)
   .title
-    = index_user == current_user ? t(:my) : index_user.full_name + t(:s)  # if current user show 'My' otherwise use name
+    = is_me ? t(:my) : index_user.full_name + t(:s)  # if current user show 'My' otherwise use name
     = t(:completed_tasks)
     = image_tag("loading.gif", :size => :thumb, :id => "loading", :style => "display: none;")
 - else
@@ -16,6 +18,6 @@
     %div{ hidden_if(filtered_out?(@view, key)), :id => "list_#{key}" }
       %h3{:class => key}= t(value)
       .bucket{:id => key}= render :partial => @view, :collection => tasks[key] || [], :locals => { :bucket => key }
-  - if tasks.values.flatten.blank?
+  - if tasks.values.flatten.blank? and is_me
     = render "empty"
 
