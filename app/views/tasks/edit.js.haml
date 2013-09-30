@@ -8,7 +8,7 @@
     crm.flip_form('edit_#{entity_name}');
     crm.set_title('edit_#{entity_name}', '#{h @entity.name}');
   - else                                            # Called from index page...
-    - partial = (@task.assigned_to && @task.assigned_to != current_user.id) ? "assigned" : "pending"
+    - partial = @view || ((@task.assigned_to && @task.assigned_to != current_user.id) ? "assigned" : "pending")
     jQuery('##{id}').html('#{ j render(:partial => partial, :collection => [ @task ], :locals => { :bucket => @task.bucket }) }');
     -#jQuery('##{id}').replaceWith('#{ j render(:partial => entity_name, :collection => [ @entity ]) }');
 

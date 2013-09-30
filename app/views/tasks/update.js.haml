@@ -1,6 +1,6 @@
 - if @task.errors.empty?
 
-  - if called_from_landing_page?
+  - if called_from_landing_page? # task detail page , just flip
     crm.flip_form('edit_task');
     crm.set_title('edit_task', '#{h @task.name}');
   - elsif !called_from_index_page?
@@ -8,13 +8,15 @@
     -# partial with the new task, and update recent items.
     = replace_content(@task)
     jQuery('#recently').replaceWith('#{ j render(:partial => "shared/recently") }');
-  - else
+  - else  # task index page.
     - if @task.assigned_to != @task_before_update.assigned_to
       = reassign(@task)
     - elsif @task.bucket != @task_before_update.bucket
       = reschedule(@task)
     - else
-      = replace_content(@task, @task.bucket)
+      -# replace_content(@task, @task.bucket)
+      - partial = @view || ((@task.assigned_to && @task.assigned_to != current_user.id) ? "assigned" : "pending")
+      jQuery('##{dom_id(@task)}').html('#{ j render(:partial => "tasks/#{partial}", :collection => [ @task ], :locals => { :bucket => @task.bucket }) }')
 
 - else # Errors
   jQuery('##{dom_id(@task)}').effect("shake", { duration:250, distance: 6 });

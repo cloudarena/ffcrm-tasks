@@ -5,11 +5,14 @@
     .strip.white #{t :other}
 
   - is_my = pending.my?(current_user)
+  - is_tracked_by_me = pending.tracked_by?(current_user)  
+
   .tools
-    - if is_my
+    - if is_tracked_by_me
       = link_to_task_edit(pending, bucket) + " | "
       = link_to_discard(pending) + " | " if shown_on_landing_page?
       = link_to_task_delete(pending, bucket)
+
   - if is_my
     = check_box_tag dom_id(pending, :complete), 1, false, :onclick => link_to_task_complete(pending, bucket)
 
@@ -18,7 +21,7 @@
       - if pending.user.id != current_user.id
         = t(:task_from, link_to(pending.user.full_name, user_path(pending.user))).html_safe << ':'
 
-      - if is_my
+      - if is_tracked_by_me
         = link_to auto_link(h(pending.name)), task_path(pending)
       - else
         = h(pending.name)
