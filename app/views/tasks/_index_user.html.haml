@@ -3,7 +3,8 @@
 - if @view == "completed"
   - buckets = Setting.unroll(:task_completed)
   .title
-    = index_user.full_name + " - " +  t(:completed_tasks)
+    = index_user == current_user ? t(:my) : index_user.full_name + t(:s)  # if current user show 'My' otherwise use name
+    = t(:completed_tasks)
     = image_tag("loading.gif", :size => :thumb, :id => "loading", :style => "display: none;")
 - else
   - buckets = Setting.unroll(:task_bucket)

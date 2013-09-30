@@ -4,14 +4,20 @@
   - else
     .strip.white #{t :other}
 
+  - is_me = assigned.my?(current_user)
   .tools
-    = link_to_task_edit(assigned, bucket) + " | "
-    = link_to_discard(assigned) + " | " if shown_on_landing_page?
-    = link_to_task_delete(assigned, bucket)
+    - if is_me
+      = link_to_task_edit(assigned, bucket) + " | "
+      = link_to_discard(assigned) + " | " if shown_on_landing_page?
+      = link_to_task_delete(assigned, bucket)
 
   .indent
     = link_to(assigned.assignee.full_name, user_path(assigned.assignee)) + ": "
-    = link_to auto_link(h(assigned.name)), task_path(assigned)
+    - if is_me
+      = link_to auto_link(h(assigned.name)), task_path(assigned)
+    - else
+      = h(assigned.name)
+
     - if assigned.asset_id?
       == #{t :related} #{link_to(h(assigned.asset.name), polymorphic_url(assigned.asset))}
     &ndash;

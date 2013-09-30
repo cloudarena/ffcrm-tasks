@@ -28,7 +28,7 @@ class TasksController < EntitiesController
     @tasks = []
     @users.each do |user| 
       tasks = Task.find_all_grouped(user,@view)
-      @tasks << tasks.map(&:second).flatten
+      @tasks += tasks.map(&:second).flatten
     end
 
     respond_with @tasks do |format|
