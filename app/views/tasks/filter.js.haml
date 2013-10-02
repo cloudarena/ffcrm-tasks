@@ -1,6 +1,6 @@
 - if params[:checked] == 'true'
-  jQuery('#list_#{j params[:filter]}').show();  # too keep back compatibility (since other page may still use it)
+  jQuery('#list_#{j params[:filter]}').show(); // to keep back compatibility (since other page may still use it)
   jQuery('.list_#{j params[:filter]}').show();
 - else
-  jQuery('#list_#{j params[:filter]}').hide();  # too keep back compatibility (since other page may still use it)
+  jQuery('#list_#{j params[:filter]}').hide();  // to keep back compatibility (since other page may still use it)
   jQuery('.list_#{j params[:filter]}').hide();
