@@ -3,7 +3,7 @@ Rails.application.routes.draw do
     member do
       post :subscribe
       post :unsubscribe
-      post :versions
+      get :versions
     end
   end
 end
