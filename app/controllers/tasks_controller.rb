@@ -124,7 +124,6 @@ class TasksController < EntitiesController
   # DELETE /tasks/1
   #----------------------------------------------------------------------------
   def destroy
-    debugger
     @view = params[:view] || "pending"
     @task = Task.tracked_by(current_user).find(params[:id])
     @task.destroy
