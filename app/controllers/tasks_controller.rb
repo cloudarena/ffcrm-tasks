@@ -19,7 +19,7 @@ class TasksController < EntitiesController
   #----------------------------------------------------------------------------
   def index
     @view = params[:view] || "pending"
-    @users = current_user.groups.map{|g| g.users}.flatten
+    @users = current_user.groups.map{|g| g.users}.flatten.uniq
     @users.tap{|users| 
       users.delete(current_user);
       users.unshift(current_user);

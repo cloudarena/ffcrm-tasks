@@ -2,22 +2,23 @@
 
 - is_me = (index_user == current_user)
 
-- if @view == "completed"
-  - buckets = Setting.unroll(:task_completed)
-  .title
-    = is_me ? t(:my) : index_user.full_name + t(:s)  # if current user show 'My' otherwise use name
-    = t(:completed_tasks)
-    = image_tag("loading.gif", :size => :thumb, :id => "loading", :style => "display: none;")
-- else
-  - buckets = Setting.unroll(:task_bucket)
-  = render :partial => "index_user_title", :locals => { :user => index_user}
-  
+.user{:id=>"user_#{index_user.id}"}
+  - if @view == "completed"
+    - buckets = Setting.unroll(:task_completed)
+    .title
+      = is_me ? t(:my) : index_user.full_name + t(:s)  # if current user show 'My' otherwise use name
+      = t(:completed_tasks)
+      = image_tag("loading.gif", :size => :thumb, :id => "loading", :style => "display: none;")
+  - else
+    - buckets = Setting.unroll(:task_bucket)
+    = render :partial => "index_user_title", :locals => { :user => index_user}
 
-.log#tasks
-  - buckets.each do |value, key|
-    %div{ hidden_if(filtered_out?(@view, key)), :id => "list_#{key}", :class => "list_#{key}" }
-      %h3{:class => key}= t(value)
-      .bucket{:id => key}= render :partial => @view, :collection => tasks[key] || [], :locals => { :bucket => key }
-  - if tasks.values.flatten.blank? and is_me
-    = render "empty"
+
+  .log#tasks
+    - buckets.each do |value, key|
+      %div{ hidden_if(filtered_out?(@view, key)), :id => "list_#{key}", :class => "list_#{key}" }
+        %h3{:class => key}= t(value)
+        .bucket{:id => key}= render :partial => @view, :collection => tasks[key] || [], :locals => { :bucket => key }
+    - if tasks.values.flatten.blank? and is_me
+      = render "empty"
 
