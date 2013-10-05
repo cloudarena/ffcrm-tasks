@@ -1,8 +1,9 @@
 Rails.application.routes.draw do
   resources :tasks, :id => /\d+/, :only=>[]  do
     member do
-      match :subscribe
-      match :unsubscribe
+      post :subscribe
+      post :unsubscribe
+      post :versions
     end
   end
 end
