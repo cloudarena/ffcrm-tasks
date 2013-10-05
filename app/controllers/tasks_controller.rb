@@ -124,6 +124,7 @@ class TasksController < EntitiesController
   # DELETE /tasks/1
   #----------------------------------------------------------------------------
   def destroy
+    debugger
     @view = params[:view] || "pending"
     @task = Task.tracked_by(current_user).find(params[:id])
     @task.destroy
@@ -134,7 +135,9 @@ class TasksController < EntitiesController
     end
 
     update_sidebar if called_from_index_page?
-    respond_with(@task)
+    respond_with(@task) do |format|
+      format.html { redirect_to tasks_path }
+    end
   end
 
   # PUT /tasks/1/complete
