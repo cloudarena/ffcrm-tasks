@@ -91,7 +91,8 @@ describe TasksController do
     end
 
     it "redirect to task index page if the task doesn't exist" do
-      id = 999999 && (id += 1 while Task.find_by_id(id))  #get a task id that not exists.
+      id = 999999 
+      id += 1 while Task.find_by_id(id)  #get a task id that not exists.
       get :show, :id=>id
       response.should redirect_to(:action=>:index)
     end
