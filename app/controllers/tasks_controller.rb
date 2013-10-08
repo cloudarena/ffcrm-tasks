@@ -19,17 +19,8 @@ class TasksController < EntitiesController
   #----------------------------------------------------------------------------
   def index
     @view = params[:view] || "pending"
-    @users = current_user.groups.map{|g| g.users}.flatten.uniq
-    @users.tap{|users| 
-      users.delete(current_user);
-      users.unshift(current_user);
-    }
-    @mapping = {}  # uid -> tasks mapping.
-    @tasks = []
-    @users.each do |user| 
-      tasks = Task.find_all_grouped(user,@view)
-      @tasks += tasks.map(&:second).flatten
-    end
+    @users = User.users_in_group(current_user)
+    @tasks =Task.tasks_of_users(@users, @view)
 
     respond_with @tasks do |format|
       format.xls { render :layout => 'header' }
