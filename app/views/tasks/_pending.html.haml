@@ -5,12 +5,12 @@
     .strip.white #{t :other}
 
   - is_my = pending.my?(current_user)
-  - is_tracked_by_me = pending.tracked_by?(current_user)  
 
   .tools
-    - if is_tracked_by_me
+    - if can? :update, pending
       = link_to_task_edit(pending, bucket) + " | "
       = link_to_discard(pending) + " | " if shown_on_landing_page?
+    - if can? :destroy, pending
       = link_to_task_delete(pending, bucket)
 
   - if is_my
@@ -21,7 +21,7 @@
       - if pending.user.id != current_user.id
         = t(:task_from, link_to(pending.user.full_name, user_path(pending.user))).html_safe << ':'
 
-      - if is_tracked_by_me
+      -if can? :update, pending
         = link_to auto_link(h(pending.name)), task_path(pending)
       - else
         = h(pending.name)

@@ -6,14 +6,15 @@
 
   - is_my = completed.my?(current_user)
   .tools
-    - if is_my
+    - if can? :update, completed
       - if shown_on_landing_page?
         = link_to_discard(completed) + (current_user == completed.user ? ' | ' : '')
+    - if can? :destroy, completed
       = link_to_task_delete(completed, bucket)
 
   .indent
     %strike
-      - if is_my
+      - if can? :update, completed
         = link_to auto_link(h(completed.name)), task_path(completed)
       - else
         = h(completed.name)
