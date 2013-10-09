@@ -85,8 +85,8 @@ ActiveSupport.on_load(:fat_free_crm_task) do
         hash[key] ||= 0
         users_in_group.each {|user|
           hash[key] += (view == "assigned" ? assigned_by(user).send(key).pending.count : myy(user).send(key).send(view).count)
-          hash[:all] += hash[key]
         }
+        hash[:all] += hash[key]
         hash
       end
     end
