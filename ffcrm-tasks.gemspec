@@ -5,13 +5,13 @@ require "ffcrm-tasks/version"
 
 # Describe your gem and declare its dependencies:
 Gem::Specification.new do |s|
-  s.name        = "ffcrm-tasks"
+  s.name        = 'ffcrm-tasks'
   s.version     = FfcrmTasks::VERSION
-  s.authors     = ["TODO: Your name"]
-  s.email       = ["TODO: Your email"]
-  s.homepage    = "TODO"
-  s.summary     = "TODO: Summary of FfcrmTasks."
-  s.description = "TODO: Description of FfcrmTasks."
+  s.authors     = ['Tolga Yalcinkaya']
+  s.email       = ['tolga@cloudarena.com']
+  s.homepage    = 'http://www.cloudarena.com'
+  s.summary     = "Advanced tasks for Fat Free CRM"
+  s.description = "Commentable tasks and group visible tasks"
 
   s.files = Dir["{app,config,db,lib}/**/*"] + ["LICENSE", "Rakefile", "README.md"]
   s.test_files = Dir["test/**/*"]
