@@ -18,18 +18,10 @@ class TasksController < EntitiesController
   # GET /tasks
   #----------------------------------------------------------------------------
   def index
+#    debugger
     @view = params[:view] || "pending"
-    @users = current_user.groups.map{|g| g.users}.flatten.uniq
-    @users.tap{|users| 
-      users.delete(current_user);
-      users.unshift(current_user);
-    }
-    @mapping = {}  # uid -> tasks mapping.
-    @tasks = []
-    @users.each do |user| 
-      tasks = Task.find_all_grouped(user,@view)
-      @tasks += tasks.map(&:second).flatten
-    end
+    @users = User.users_in_group(current_user)
+    @tasks =Task.tasks_of_users(@users, @view)
 
     respond_with @tasks do |format|
       format.xls { render :layout => 'header' }
@@ -41,7 +33,7 @@ class TasksController < EntitiesController
   # GET /tasks/1
   #----------------------------------------------------------------------------
   def show
-    @task = Task.tracked_by(current_user).find(params[:id])
+    @task = Task.my.find(params[:id])
 
     respond_with(@task)
   end
@@ -70,13 +62,13 @@ class TasksController < EntitiesController
   #----------------------------------------------------------------------------
   def edit
     @view = params[:view] || "pending"
-    @task = Task.tracked_by(current_user).find(params[:id])
+    @task = Task.my.find(params[:id])
     @bucket = Setting.unroll(:task_bucket)[1..-1] << [ t(:due_specific_date, :default => 'On Specific Date...'), :specific_time ]
     @category = Setting.unroll(:task_category)
     @asset = @task.asset if @task.asset_id?
 
     if params[:previous].to_s =~ /(\d+)\z/
-      @previous = Task.tracked_by(current_user).find_by_id($1) || $1.to_i
+      @previous = Task.my.find_by_id($1) || $1.to_i
     end
 
     respond_with(@task)
@@ -99,7 +91,7 @@ class TasksController < EntitiesController
   #----------------------------------------------------------------------------
   def update
     @view = params[:view] || "pending"
-    @task = Task.tracked_by(current_user).find(params[:id])
+    @task = Task.my.find(params[:id])
     @task_before_update = @task.dup
 
     if @task.due_at && (@task.due_at < Date.today.to_time)
